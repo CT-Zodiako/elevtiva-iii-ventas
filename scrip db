@@ -1,0 +1,164 @@
+-- ventas.almacen definition
+
+CREATE TABLE `almacen` (
+  `almacen_id` int NOT NULL,
+  `nombre` varchar(100) DEFAULT NULL,
+  `direccion` varchar(255) DEFAULT NULL,
+  `barrio` varchar(50) DEFAULT NULL,
+  `ciudad` varchar(50) DEFAULT NULL,
+  `region_ubicacion` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`almacen_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ventas.cliente definition
+
+CREATE TABLE `cliente` (
+  `cliente_id` int NOT NULL,
+  `identificacion` varchar(15) DEFAULT NULL,
+  `nombre` varchar(255) DEFAULT NULL,
+  `genero` enum('M','F') DEFAULT NULL,
+  `estado_civil` varchar(20) DEFAULT NULL,
+  `direccion` varchar(255) DEFAULT NULL,
+  `barrio` varchar(50) DEFAULT NULL,
+  `ciudad` varchar(50) DEFAULT NULL,
+  `region_residencia` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`cliente_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- ventas.fecha definition
+
+CREATE TABLE `fecha` (
+  `fecha_id` int NOT NULL,
+  `fecha_completa` date DEFAULT NULL,
+  `anio` int DEFAULT NULL,
+  `semestre` varchar(50) DEFAULT NULL,
+  `mes` int DEFAULT NULL,
+  `dia` int DEFAULT NULL,
+  `nombre_dia` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`fecha_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ventas.producto definition
+
+CREATE TABLE `producto` (
+  `producto_id` int NOT NULL,
+  `codigo` varchar(10) DEFAULT NULL,
+  `nombre` varchar(255) DEFAULT NULL,
+  `categoria` varchar(50) DEFAULT NULL,
+  `subcategoria` varchar(50) DEFAULT NULL,
+  `marca` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`producto_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ventas.vendedor definition
+
+CREATE TABLE `vendedor` (
+  `vendedor_id` int NOT NULL,
+  `identificacion` varchar(15) DEFAULT NULL,
+  `nombre` varchar(255) DEFAULT NULL,
+  `nivel_estudios` varchar(50) DEFAULT NULL,
+  `genero` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `estado_civil` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`vendedor_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+
+-- ventas.ventas definition
+
+CREATE TABLE `ventas` (
+  `venta_id` int NOT NULL,
+  `producto_id` int DEFAULT NULL,
+  `cliente_id` int DEFAULT NULL,
+  `almacen_id` int DEFAULT NULL,
+  `vendedor_id` int DEFAULT NULL,
+  `fecha_id` int DEFAULT NULL,
+  `unidades_vendidas` int DEFAULT NULL,
+  `precio_unitario` decimal(10,2) DEFAULT NULL,
+  `subtotal` decimal(10,2) DEFAULT NULL,
+  PRIMARY KEY (`venta_id`),
+  KEY `producto_id` (`producto_id`),
+  KEY `cliente_id` (`cliente_id`),
+  KEY `almacen_id` (`almacen_id`),
+  KEY `vendedor_id` (`vendedor_id`),
+  KEY `fecha_id` (`fecha_id`),
+  CONSTRAINT `ventas_ibfk_1` FOREIGN KEY (`producto_id`) REFERENCES `producto` (`producto_id`),
+  CONSTRAINT `ventas_ibfk_2` FOREIGN KEY (`cliente_id`) REFERENCES `cliente` (`cliente_id`),
+  CONSTRAINT `ventas_ibfk_3` FOREIGN KEY (`almacen_id`) REFERENCES `almacen` (`almacen_id`),
+  CONSTRAINT `ventas_ibfk_4` FOREIGN KEY (`vendedor_id`) REFERENCES `vendedor` (`vendedor_id`),
+  CONSTRAINT `ventas_ibfk_5` FOREIGN KEY (`fecha_id`) REFERENCES `fecha` (`fecha_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+
+
+
+#################################
+CREATE TABLE fecha (
+    fecha_id INT PRIMARY KEY,
+    fecha_completa DATE,
+    anio INT,
+    semestre INT,
+    mes INT,
+    dia INT,
+    nombre_dia VARCHAR(10)
+);
+
+CREATE TABLE producto (
+    producto_id INT PRIMARY KEY,
+    codigo VARCHAR(10),
+    nombre VARCHAR(255),
+    categoria VARCHAR(50),
+    subcategoria VARCHAR(50),
+    marca VARCHAR(50)
+);
+
+CREATE TABLE cliente (
+    cliente_id INT PRIMARY KEY,
+    identificacion VARCHAR(15),
+    nombre VARCHAR(255),
+    genero ENUM('M', 'F'),
+    estado_civil VARCHAR(20),
+    direccion VARCHAR(255),
+    barrio VARCHAR(50),
+    ciudad VARCHAR(50),
+    region_residencia VARCHAR(50)
+);
+
+CREATE TABLE almacen (
+    almacen_id INT PRIMARY KEY,
+    nombre VARCHAR(100),
+    direccion VARCHAR(255),
+    barrio VARCHAR(50),
+    ciudad VARCHAR(50),
+    region_ubicacion VARCHAR(50)
+);
+
+CREATE TABLE vendedor (
+    vendedor_id INT PRIMARY KEY,
+    identificacion VARCHAR(15),
+    nombre VARCHAR(255),
+    nivel_estudios VARCHAR(50),
+    genero ENUM('M', 'F'),
+    estado_civil VARCHAR(20)
+);
+
+CREATE TABLE ventas (
+    venta_id INT PRIMARY KEY,
+    producto_id INT,
+    cliente_id INT,
+    almacen_id INT,
+    vendedor_id INT,
+    fecha_id INT,
+    unidades_vendidas INT,
+    precio_unitario DECIMAL(10, 2),
+    subtotal DECIMAL(10, 2),
+    FOREIGN KEY (producto_id) REFERENCES producto (producto_id),
+    FOREIGN KEY (cliente_id) REFERENCES cliente (cliente_id),
+    FOREIGN KEY (almacen_id) REFERENCES almacen (almacen_id),
+    FOREIGN KEY (vendedor_id) REFERENCES vendedor (vendedor_id),
+    FOREIGN KEY (fecha_id) REFERENCES fecha (fecha_id)
+);
+
+
