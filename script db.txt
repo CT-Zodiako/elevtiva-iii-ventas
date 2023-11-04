@@ -16,7 +16,7 @@ CREATE TABLE `cliente` (
   `cliente_id` int NOT NULL,
   `identificacion` varchar(15) DEFAULT NULL,
   `nombre` varchar(255) DEFAULT NULL,
-  `genero` enum('M','F') DEFAULT NULL,
+  `genero` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `estado_civil` varchar(20) DEFAULT NULL,
   `direccion` varchar(255) DEFAULT NULL,
   `barrio` varchar(50) DEFAULT NULL,
@@ -24,7 +24,6 @@ CREATE TABLE `cliente` (
   `region_residencia` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`cliente_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
 
 -- ventas.fecha definition
 
@@ -39,6 +38,7 @@ CREATE TABLE `fecha` (
   PRIMARY KEY (`fecha_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+
 -- ventas.producto definition
 
 CREATE TABLE `producto` (
@@ -51,6 +51,7 @@ CREATE TABLE `producto` (
   PRIMARY KEY (`producto_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+
 -- ventas.vendedor definition
 
 CREATE TABLE `vendedor` (
@@ -62,8 +63,6 @@ CREATE TABLE `vendedor` (
   `estado_civil` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`vendedor_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-
 
 -- ventas.ventas definition
 
@@ -90,75 +89,5 @@ CREATE TABLE `ventas` (
   CONSTRAINT `ventas_ibfk_5` FOREIGN KEY (`fecha_id`) REFERENCES `fecha` (`fecha_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-
-
-
-
-#################################
-CREATE TABLE fecha (
-    fecha_id INT PRIMARY KEY,
-    fecha_completa DATE,
-    anio INT,
-    semestre INT,
-    mes INT,
-    dia INT,
-    nombre_dia VARCHAR(10)
-);
-
-CREATE TABLE producto (
-    producto_id INT PRIMARY KEY,
-    codigo VARCHAR(10),
-    nombre VARCHAR(255),
-    categoria VARCHAR(50),
-    subcategoria VARCHAR(50),
-    marca VARCHAR(50)
-);
-
-CREATE TABLE cliente (
-    cliente_id INT PRIMARY KEY,
-    identificacion VARCHAR(15),
-    nombre VARCHAR(255),
-    genero ENUM('M', 'F'),
-    estado_civil VARCHAR(20),
-    direccion VARCHAR(255),
-    barrio VARCHAR(50),
-    ciudad VARCHAR(50),
-    region_residencia VARCHAR(50)
-);
-
-CREATE TABLE almacen (
-    almacen_id INT PRIMARY KEY,
-    nombre VARCHAR(100),
-    direccion VARCHAR(255),
-    barrio VARCHAR(50),
-    ciudad VARCHAR(50),
-    region_ubicacion VARCHAR(50)
-);
-
-CREATE TABLE vendedor (
-    vendedor_id INT PRIMARY KEY,
-    identificacion VARCHAR(15),
-    nombre VARCHAR(255),
-    nivel_estudios VARCHAR(50),
-    genero ENUM('M', 'F'),
-    estado_civil VARCHAR(20)
-);
-
-CREATE TABLE ventas (
-    venta_id INT PRIMARY KEY,
-    producto_id INT,
-    cliente_id INT,
-    almacen_id INT,
-    vendedor_id INT,
-    fecha_id INT,
-    unidades_vendidas INT,
-    precio_unitario DECIMAL(10, 2),
-    subtotal DECIMAL(10, 2),
-    FOREIGN KEY (producto_id) REFERENCES producto (producto_id),
-    FOREIGN KEY (cliente_id) REFERENCES cliente (cliente_id),
-    FOREIGN KEY (almacen_id) REFERENCES almacen (almacen_id),
-    FOREIGN KEY (vendedor_id) REFERENCES vendedor (vendedor_id),
-    FOREIGN KEY (fecha_id) REFERENCES fecha (fecha_id)
-);
 
 
